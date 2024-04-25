@@ -9,16 +9,19 @@ import (
 
 const (
 	// opcodes
-	ENDWRD int = 0x0F
-	PUSH   int = 0xF6
-	POP    int = 0xF5
-	RETURN int = 0xFD
-	CALL   int = 0xFA
+	PUSH   int = 0xF0
+	POP    int = 0xF1
+	RETURN int = 0xF2
+	CALL   int = 0xF3
+	SFRAME int = 0xF4 //create stack frame
 	SUM    int = 0xA0
+	DIV    int = 0xA1
+	MUL    int = 0xA2
 
-	MODSEC int = 0xAD //modules section
-	ADDMOD int = 0xDD // add mod to loader
-	MDSEND int = 0xDA // end module section
+	MODSEC  int = 0xAD //modules section
+	ADDMOD  int = 0xD0 // add mod to loader
+	MODNEND int = 0xD1
+	MDSEND  int = 0xDA // end module section
 
 	//error codes
 
@@ -30,21 +33,28 @@ const (
 var ip int = 4
 var bytecode []byte
 
+var stack []int
+var sp int = 0
+var bp int = 0
+
 func main() {
 	fmt.Println("Petlang v0.1")
 	bytecode = loadByteCode(os.Args[1])
 	errcode := evalByteCode()
+	decodeErrors(errcode)
+	fmt.Println("Petlang exit")
+}
+
+func decodeErrors(errcode int) {
 	if errcode != SUCCESSEVAL {
 		fmt.Printf("Petlang vm error, code: 0x%02x\n", errcode)
 		switch errcode {
 		case NOTBYTECODE:
 			fmt.Printf("file isn't petlang bytecode\n")
 		case MODSECFINDFAIL:
-
+			fmt.Printf("Can't find modules import section")
 		}
 	}
-
-	fmt.Println("Petlang exit")
 }
 
 func loadByteCode(filename string) []byte {
@@ -102,4 +112,35 @@ func readWordX32(start int) int {
 	}
 	fmt.Printf("word: 0x%02x\n", word)
 	return word
+}
+
+//STACK OPERATING
+
+func push(value int) {
+	stack = append(stack, value)
+	sp++
+}
+
+func pop() int {
+	value := stack[sp]
+	stack = stack[:len(stack)-1]
+	return value
+}
+
+func sum() {
+	leftop := stack[sp-1]
+	rightop := stack[sp]
+	push(leftop + rightop)
+}
+
+func div() {
+	leftop := stack[sp-1]
+	rightop := stack[sp]
+	push(leftop - rightop)
+}
+
+func mul() {
+	leftop := stack[sp-1]
+	rightop := stack[sp]
+	push(leftop * rightop)
 }
