@@ -9,19 +9,19 @@ import (
 
 const (
 	// opcodes
-	PUSH   int = 0xF0
-	POP    int = 0xF1
-	RETURN int = 0xF2
-	CALL   int = 0xF3
-	SFRAME int = 0xF4 //create stack frame
-	SUM    int = 0xA0
-	DIV    int = 0xA1
-	MUL    int = 0xA2
+	PUSH   byte = 0xF0
+	POP    byte = 0xF1
+	RETURN byte = 0xF2
+	CALL   byte = 0xF3
+	SFRAME byte = 0xF4 //create stack frame
+	SUM    byte = 0xA0
+	DIV    byte = 0xA1
+	MUL    byte = 0xA2
 
-	MODSEC  int = 0xAD //modules section
-	ADDMOD  int = 0xD0 // add mod to loader
-	MODNEND int = 0xD1
-	MDSEND  int = 0xDA // end module section
+	MODSEC  byte = 0xAD //modules section
+	ADDMOD  byte = 0xD0 // add mod to loader
+	MODNEND byte = 0xD1
+	MDSEND  byte = 0xDA // end module section
 
 	//error codes
 
@@ -30,12 +30,12 @@ const (
 	MODSECFINDFAIL int = 0xFA11EDF1
 )
 
-var ip int = 4
+var ip int = 0
 var bytecode []byte
 
-var stack []int
-var sp int = 0
-var bp int = 0
+var stack [128]int
+var sp int = 127
+var bp int = 127
 
 func main() {
 	fmt.Println("Petlang v0.1")
@@ -87,9 +87,21 @@ func evalByteCode() int {
 		return NOTBYTECODE
 	}
 	//find where is import section
-	if ip := findImportSection(); ip == 0 {
-		return MODSECFINDFAIL
+	// if ip := findImportSection(); ip == 0 {
+	// 	return MODSECFINDFAIL
+	// }
+	for ; ip != len(bytecode); ip++ {
+		fmt.Printf("\n\n INSTRUCTION: 0x%02x\n\n", bytecode[ip])
+		switch bytecode[ip] {
+		case PUSH:
+			fmt.Println("PUSH command")
+			ip++
+			push(readWordX32(ip))
+		case SUM:
+			sum()
+		}
 	}
+	debugMode()
 
 	return SUCCESSEVAL
 }
@@ -107,6 +119,7 @@ func readWordX32(start int) int {
 	var word int
 	var offset int = 24
 	for i := 0; i != 4; i++ {
+		ip++
 		word += int(bytecode[start+i]) << offset
 		offset -= 8
 	}
@@ -117,20 +130,24 @@ func readWordX32(start int) int {
 //STACK OPERATING
 
 func push(value int) {
-	stack = append(stack, value)
-	sp++
+	stack[sp] = value
+	fmt.Printf("\npush: 0x%02x\n", stack[sp])
+	sp--
 }
 
 func pop() int {
 	value := stack[sp]
-	stack = stack[:len(stack)-1]
+	sp++
 	return value
 }
 
 func sum() {
-	leftop := stack[sp-1]
-	rightop := stack[sp]
+	leftop := stack[sp]
+	fmt.Println(leftop)
+	rightop := stack[sp+1]
+	fmt.Println(rightop)
 	push(leftop + rightop)
+	fmt.Print(pop())
 }
 
 func div() {
@@ -143,4 +160,10 @@ func mul() {
 	leftop := stack[sp-1]
 	rightop := stack[sp]
 	push(leftop * rightop)
+}
+
+func debugMode() {
+	for stackpose, stackvalue := range stack {
+		fmt.Printf("\npose: %d, value: 0x%02x", stackpose, stackvalue)
+	}
 }
