@@ -11,3 +11,13 @@
   <img src="https://forthebadge.com/images/badges/code-sucks-it-works.svg" />
 </div>
 
+## 🧬 Roadmap
+
+- [ ] Documentation
+- [x] Bytecode opcodes
+- [ ] Bytecode compiler
+- [x] Base types
+- [x] Stack operations
+- [ ] Multi-threading
+- [x] Error service
+      
