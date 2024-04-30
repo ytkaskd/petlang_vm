@@ -18,27 +18,52 @@ func Preload(bc []byte) {
 	vmstack.Bp = 127
 }
 
-func EvalByteCode(bc []byte) {
+func EvalByteCode() {
 
 	//check bytecode valid
 	if readWordX32(0) != 0xFEE1DEAD {
-		vm_errors.ThrowError(vm_errors.NOTBYTECODE)
+		vm_errors.ThrowError(vm_errors.NOTBYTECODE, ip)
 	}
 	//find where is import section
-	// if ip := findImportSection(); ip == 0 {
-	// 	return MODSECFINDFAIL
-	// }
+	if ip := findImportSection(); ip == 0 {
+		vm_errors.ThrowError(vm_errors.MODSECFINDFAIL, ip)
+	}
 	for ; ip != len(bytecode); ip++ {
 		fmt.Printf("\n\n INSTRUCTION: 0x%02x\n\n", bytecode[ip])
 		switch bytecode[ip] {
-		//TODO: Implement PUSHINT, PUSHFLOAT, PUSHREF and other opcodes from opcodes.go
+		//TODO: Implement and other opcodes from opcodes.go
 		case opcode.PUSHBYTE:
-			fmt.Println("PUSH BYTE command")
+			fmt.Println("\nPUSH BYTE command")
 			ip++
 			value := rte.PetlangByte{Value: bytecode[ip]}
 			se := stack.StackElement{Valtype: rte.Byte, Value: value}
 			vmstack.Push(se)
+
+		case opcode.PUSHINT:
+			fmt.Println("\nPUSH INT command")
+			ip++
+			value := rte.PetlangInt{Value: readWordX32(ip)}
+			se := stack.StackElement{Valtype: rte.Integer, Value: value}
+			vmstack.Push(se)
+
+		case opcode.PUSHFLOAT:
+			fmt.Println("\nPUSH FLOAT command")
+			ip++
+			value := rte.PetlangFLoat32{Value: float32(readWordX32(ip))}
+			se := stack.StackElement{Valtype: rte.Float, Value: value}
+			vmstack.Push(se)
+
+		case opcode.PUSHREF:
+			fmt.Println("\nPUSH REF command")
+			ip++
+			value := rte.PetlangRef{Value: readWordX32(ip)}
+			se := stack.StackElement{Valtype: rte.Reference, Value: value}
+			vmstack.Push(se)
+
+		default:
+			vm_errors.ThrowError(vm_errors.UNKNOWNOPCODE, ip)
 		}
+
 	}
 
 }

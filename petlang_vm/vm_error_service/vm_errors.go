@@ -9,15 +9,18 @@ import (
 const (
 	NOTBYTECODE    int = 0xBADC0DE
 	MODSECFINDFAIL int = 0xFA11EDF1
+	UNKNOWNOPCODE  int = 0xCAFEBABE
 )
 
-func ThrowError(errcode int) {
-	fmt.Printf("\nPetlang vm error, code: 0x%02x\n", errcode)
+func ThrowError(errcode int, point int) {
+	fmt.Printf("\nPetlang vm error, code: 0x%02x\nat point: %d\n", errcode, point)
 	switch errcode {
 	case NOTBYTECODE:
-		fmt.Printf("file isn't petlang bytecode\n")
+		fmt.Println("file isn't petlang bytecode")
 	case MODSECFINDFAIL:
-		fmt.Printf("Can't find modules import section\n")
+		fmt.Println("Can't find modules import section")
+	case UNKNOWNOPCODE:
+		fmt.Println("Can't recognize bytecode")
 	}
 
 	os.Exit(1)

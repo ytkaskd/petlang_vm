@@ -10,7 +10,7 @@ import (
 
 func main() {
 	fmt.Println("Petlang v0.1")
-	petlangvm.EvalByteCode(loadByteCode(os.Args[1]))
+	petlangvm.Preload(loadByteCode(os.Args[1]))
 	fmt.Println("Petlang exit")
 }
 
