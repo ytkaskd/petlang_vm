@@ -21,7 +21,7 @@
 - [ ] Multi-threading
 - [x] Error service
 
-###About
+### About
 Petlang VM - modular virtual machine with its own bytecode `.pbc` and object files `.pto`
 Supports types such as: 
 ```
