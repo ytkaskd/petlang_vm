@@ -6,8 +6,8 @@
 </h1>
 
 <div align="center">
-[![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/code-sucks-it-works.svg)](https://forthebadge.com)
+  <img src="https://forthebadge.com/images/badges/made-with-go.svg" />
+  <img src="https://forthebadge.com/images/badges/open-source.svg" />
+  <img src="https://forthebadge.com/images/badges/code-sucks-it-works.svg" />
 </div>
 
