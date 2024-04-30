@@ -6,6 +6,9 @@
 </h1>
 
 <div align="center">
-[![forthebadge](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTkuNTM3NTAyMjg4ODE4MzYiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCAxNTkuNTM3NTAyMjg4ODE4MzYgMzUiPjxyZWN0IHdpZHRoPSI1Ni44NjI0OTkyMzcwNjA1NSIgaGVpZ2h0PSIzNSIgZmlsbD0iI2QwMDIxYiIvPjxyZWN0IHg9IjU2Ljg2MjQ5OTIzNzA2MDU1IiB3aWR0aD0iMTAyLjY3NTAwMzA1MTc1NzgxIiBoZWlnaHQ9IjM1IiBmaWxsPSIjZjVhNjIzIi8+PHRleHQgeD0iMjguNDMxMjQ5NjE4NTMwMjczIiB5PSIyMS41IiBmb250LXNpemU9IjEyIiBmb250LWZhbWlseT0iJ1JvYm90bycsIHNhbnMtc2VyaWYiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIyIj5VU0VTPC90ZXh0Pjx0ZXh0IHg9IjEwOC4yMDAwMDA3NjI5Mzk0NSIgeT0iMjEuNSIgZm9udC1zaXplPSIxMiIgZm9udC1mYW1pbHk9IidNb250c2VycmF0Jywgc2Fucy1zZXJpZiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjkwMCIgbGV0dGVyLXNwYWNpbmc9IjIiPkJZVEVDT0RFPC90ZXh0Pjwvc3ZnPg==)](https://forthebadge.com)
+  [![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com)
+  [![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
+  
+[![forthebadge](https://forthebadge.com/images/badges/code-sucks-it-works.svg)](https://forthebadge.com)
 </div>
 
