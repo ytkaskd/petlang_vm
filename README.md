@@ -20,4 +20,14 @@
 - [x] Stack operations
 - [ ] Multi-threading
 - [x] Error service
+
+###About
+Petlang VM - modular virtual machine with its own bytecode `.pbc` and object files `.pto`
+Supports types such as: 
+```
+byte
+int32
+float32
+reference
+```
       
