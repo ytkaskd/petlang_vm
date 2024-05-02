@@ -6,6 +6,8 @@ const (
 	PUSHINT   byte = 0xC1
 	PUSHFLOAT byte = 0xC2
 	PUSHREF   byte = 0xC3
+	IFSTAT    byte = 0xC4
+	ELSE      byte = 0xC5
 
 	POP    byte = 0xF1
 	RETURN byte = 0xF2

@@ -25,6 +25,7 @@
 Petlang VM - modular virtual machine with its own bytecode `.pbc` and object files `.pto`
 Supports types such as: 
 ```
+bool
 byte
 int32
 float32

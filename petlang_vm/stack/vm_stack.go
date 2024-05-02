@@ -2,6 +2,7 @@ package stack
 
 import (
 	rte "petlangvm/petlang_vm/stack/petlangRTE"
+	vm_errors "petlangvm/petlang_vm/vm_error_service"
 )
 
 type StackElement struct {
@@ -12,12 +13,16 @@ type StackElement struct {
 type Stack struct {
 	Sp    int
 	Bp    int
-	stack [128]StackElement
+	Stack [256]StackElement
 }
 
 //STACK OPERATING
 
-func (s Stack) Push(element StackElement) {
+func (s *Stack) Push(element StackElement) {
 	s.Sp--
-	s.stack[s.Sp] = element
+	if s.Sp < 0 {
+		vm_errors.ThrowError(vm_errors.STACKOVERFLOW, s.Sp)
+	} else {
+		s.Stack[s.Sp] = element
+	}
 }

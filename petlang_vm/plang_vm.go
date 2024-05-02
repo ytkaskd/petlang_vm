@@ -14,8 +14,8 @@ var vmstack stack.Stack
 
 func Preload(bc []byte) {
 	bytecode = bc
-	vmstack.Sp = 127
-	vmstack.Bp = 127
+	vmstack.Sp = 255
+	vmstack.Bp = 255
 }
 
 func EvalByteCode() {
@@ -31,7 +31,7 @@ func EvalByteCode() {
 	for ; ip != len(bytecode); ip++ {
 		fmt.Printf("\n\n INSTRUCTION: 0x%02x\n\n", bytecode[ip])
 		switch bytecode[ip] {
-		//TODO: Implement and other opcodes from opcodes.go
+		//TODO: Implement other opcodes from opcodes.go
 		case opcode.PUSHBYTE:
 			fmt.Println("\nPUSH BYTE command")
 			ip++
@@ -60,6 +60,10 @@ func EvalByteCode() {
 			se := stack.StackElement{Valtype: rte.Reference, Value: value}
 			vmstack.Push(se)
 
+		case opcode.POP:
+			fmt.Println("\nPOP command")
+			ip++
+
 		default:
 			vm_errors.ThrowError(vm_errors.UNKNOWNOPCODE, ip)
 		}
@@ -70,7 +74,7 @@ func EvalByteCode() {
 
 func findImportSection() int {
 	for ind, value := range bytecode {
-		if value == 0xAD {
+		if value == opcode.MODSEC {
 			return ind
 		}
 	}
@@ -87,4 +91,10 @@ func readWordX32(start int) int {
 	}
 	fmt.Printf("word: 0x%02x\n", word)
 	return word
+}
+
+func PrintStack() {
+	for index, value := range vmstack.Stack {
+		fmt.Printf(": %d :||: %02x :", index, value.Value)
+	}
 }

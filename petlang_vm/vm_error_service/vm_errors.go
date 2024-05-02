@@ -7,12 +7,13 @@ import (
 
 // error codes
 const (
-	NOTBYTECODE    int = 0xBADC0DE
-	MODSECFINDFAIL int = 0xFA11EDF1
-	UNKNOWNOPCODE  int = 0xCAFEBABE
+	NOTBYTECODE    byte = 0x00
+	MODSECFINDFAIL byte = 0x01
+	UNKNOWNOPCODE  byte = 0x02
+	STACKOVERFLOW  byte = 0x03
 )
 
-func ThrowError(errcode int, point int) {
+func ThrowError(errcode byte, point int) {
 	fmt.Printf("\nPetlang vm error, code: 0x%02x\nat point: %d\n", errcode, point)
 	switch errcode {
 	case NOTBYTECODE:
@@ -21,6 +22,8 @@ func ThrowError(errcode int, point int) {
 		fmt.Println("Can't find modules import section")
 	case UNKNOWNOPCODE:
 		fmt.Println("Can't recognize bytecode")
+	case STACKOVERFLOW:
+		fmt.Printf("\nFatal error: stack overflow! sp = %d\n", point)
 	}
 
 	os.Exit(1)

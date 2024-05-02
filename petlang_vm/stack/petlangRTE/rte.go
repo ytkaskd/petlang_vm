@@ -11,6 +11,10 @@ const (
 
 type VmRTE interface{}
 
+type PetlangBool struct {
+	basis VmRTE
+	Value bool
+}
 type PetlangByte struct {
 	basis VmRTE
 	Value byte
