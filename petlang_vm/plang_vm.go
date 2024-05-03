@@ -10,12 +10,15 @@ import (
 
 var ip int = 0
 var bytecode []byte
-var vmstack stack.Stack
+var vmstack *stack.Stack
 
-func Preload(bc []byte) {
+func Preload(bc []byte, stackSize int) {
 	bytecode = bc
-	vmstack.Sp = 255
-	vmstack.Bp = 255
+	vmstack = new(stack.Stack)
+	vmstack.StackSize = stackSize
+	vmstack.Bp = stackSize - 1
+	vmstack.Sp = stackSize - 1
+	vmstack.Stack = make([]stack.StackElement, stackSize)
 }
 
 func EvalByteCode() {
@@ -35,28 +38,28 @@ func EvalByteCode() {
 		case opcode.PUSHBYTE:
 			fmt.Println("\nPUSH BYTE command")
 			ip++
-			value := rte.PetlangByte{Value: bytecode[ip]}
+			value := bytecode[ip]
 			se := stack.StackElement{Valtype: rte.Byte, Value: value}
 			vmstack.Push(se)
 
 		case opcode.PUSHINT:
 			fmt.Println("\nPUSH INT command")
 			ip++
-			value := rte.PetlangInt{Value: readWordX32(ip)}
+			value := readWordX32(ip)
 			se := stack.StackElement{Valtype: rte.Integer, Value: value}
 			vmstack.Push(se)
 
 		case opcode.PUSHFLOAT:
 			fmt.Println("\nPUSH FLOAT command")
 			ip++
-			value := rte.PetlangFLoat32{Value: float32(readWordX32(ip))}
+			value := readWordX32(ip)
 			se := stack.StackElement{Valtype: rte.Float, Value: value}
 			vmstack.Push(se)
 
 		case opcode.PUSHREF:
 			fmt.Println("\nPUSH REF command")
 			ip++
-			value := rte.PetlangRef{Value: readWordX32(ip)}
+			value := readWordX32(ip)
 			se := stack.StackElement{Valtype: rte.Reference, Value: value}
 			vmstack.Push(se)
 

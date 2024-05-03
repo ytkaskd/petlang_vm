@@ -7,13 +7,14 @@ import (
 
 type StackElement struct {
 	Valtype rte.ValueType
-	Value   rte.VmRTE
+	Value   any
 }
 
 type Stack struct {
-	Sp    int
-	Bp    int
-	Stack [256]StackElement
+	StackSize int
+	Sp        int
+	Bp        int
+	Stack     []StackElement
 }
 
 //STACK OPERATING
@@ -26,3 +27,27 @@ func (s *Stack) Push(element StackElement) {
 		s.Stack[s.Sp] = element
 	}
 }
+
+// func (s *Stack) Sum() {
+
+// 	var se StackElement
+// 	lsv := s.Stack[s.Sp+1]
+// 	rsv := s.Stack[s.Sp]
+
+// 	//Cast by left operand(for safety)
+// 	switch lsv.Valtype {
+// 	case rte.Byte:
+// 		se = StackElement{Valtype: rte.Byte}
+// 	case rte.Integer:
+// 		se = StackElement{Valtype: rte.Integer}
+// 	case rte.Float:
+// 		se = StackElement{Valtype: rte.Float}
+// 	case rte.Reference:
+// 		se = StackElement{Valtype: rte.Reference}
+// 	}
+
+// 	if(rsv.Valtype != se.Valtype){
+
+// 	}
+
+// }

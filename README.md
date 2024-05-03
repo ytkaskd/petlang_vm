@@ -2,7 +2,7 @@
 
 <!-- Name -->
 <h1 align="center">
-  Petlang Virtual Machine 🐶
+  Petlang Virtual Machine 🐶📟
 </h1>
 
 <div align="center">
@@ -21,7 +21,7 @@
 - [ ] Multi-threading
 - [x] Error service
 
-### About
+## ❓ About
 Petlang VM - modular virtual machine with its own bytecode `.pbc` and object files `.pto`
 Supports types such as: 
 ```
