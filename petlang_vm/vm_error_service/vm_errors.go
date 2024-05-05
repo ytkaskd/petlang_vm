@@ -12,6 +12,7 @@ const (
 	UNKNOWNOPCODE
 	STACKOVERFLOW
 	CASTERROR
+	UNSUPADAR
 )
 
 func ThrowError(errcode byte, point int) {
@@ -25,8 +26,10 @@ func ThrowError(errcode byte, point int) {
 		fmt.Println("Can't recognize bytecode")
 	case STACKOVERFLOW:
 		fmt.Printf("\nFatal error: stack overflow! sp = %d\n", point)
+	case UNSUPADAR:
+		fmt.Printf("\nAddress arithmetic unsupported")
 	default:
-		fmt.Printf("Unknown exception")
+		fmt.Printf("Unknown error")
 	}
 	fmt.Print("\033[0m")
 

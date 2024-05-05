@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -10,8 +11,14 @@ import (
 
 func main() {
 	fmt.Println("Petlang v0.1")
-	petlangvm.Preload(loadByteCode(os.Args[1]), 256)
-	petlangvm.EvalByteCode()
+
+	stackSize := flag.Int("ss", 256, "\033[94mPetlangVM stack size\033[0m")
+
+	flag.Parse()
+	fmt.Printf("Stack size -ss: %d\n", *stackSize)
+	petlangvm.Preload(loadByteCode(os.Args[1]), *stackSize)
+	// petlangvm.EvalByteCode()
+	// petlangvm.PrintStack()
 	fmt.Println("Petlang exit")
 }
 

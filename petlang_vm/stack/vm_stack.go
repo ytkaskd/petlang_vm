@@ -28,26 +28,19 @@ func (s *Stack) Push(element StackElement) {
 	}
 }
 
-// func (s *Stack) Sum() {
+func (s *Stack) Sum() {
+	var se StackElement
+	lsv := s.Stack[s.Sp+1]
+	rsv := s.Stack[s.Sp]
+	s.cast(&lsv, &se)
+	s.cast(&lsv, &rsv)
+}
 
-// 	var se StackElement
-// 	lsv := s.Stack[s.Sp+1]
-// 	rsv := s.Stack[s.Sp]
-
-// 	//Cast by left operand(for safety)
-// 	switch lsv.Valtype {
-// 	case rte.Byte:
-// 		se = StackElement{Valtype: rte.Byte}
-// 	case rte.Integer:
-// 		se = StackElement{Valtype: rte.Integer}
-// 	case rte.Float:
-// 		se = StackElement{Valtype: rte.Float}
-// 	case rte.Reference:
-// 		se = StackElement{Valtype: rte.Reference}
-// 	}
-
-// 	if(rsv.Valtype != se.Valtype){
-
-// 	}
-
-// }
+func (s *Stack) cast(castTo *StackElement, se *StackElement) {
+	//Cast by left operand(for safety)
+	if castTo.Valtype != rte.Reference && se.Valtype != rte.Reference {
+		se.Valtype = castTo.Valtype
+	} else {
+		vm_errors.ThrowError(vm_errors.UNSUPADAR, s.Sp)
+	}
+}
