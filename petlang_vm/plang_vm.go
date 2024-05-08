@@ -8,75 +8,78 @@ import (
 	opcode "petlangvm/petlang_vm/vm_opcodes"
 )
 
-var ip int = 0
-var bytecode []byte
-var vmstack *stack.Stack
-
-func Preload(bc []byte, stackSize int) {
-	bytecode = bc
-	vmstack = new(stack.Stack)
-	vmstack.StackSize = stackSize
-	vmstack.Bp = stackSize - 1
-	vmstack.Sp = stackSize - 1
-	vmstack.Stack = make([]stack.StackElement, stackSize)
+type VM struct {
+	ip       int
+	bytecode []byte
+	stack    *stack.Stack
 }
 
-func EvalByteCode() {
+func (vm *VM) Preload(bc []byte, stackSize int) {
+	vm.bytecode = bc
+	vm.stack = new(stack.Stack)
+	vm.stack.StackSize = stackSize
+	vm.stack.Bp = stackSize - 1
+	vm.stack.Sp = stackSize - 1
+	vm.stack.Stack = make([]stack.StackElement, stackSize)
+}
+
+func (vm *VM) EvalByteCode() {
 
 	//check bytecode valid
-	if readWordX32(0) != 0xFEE1DEAD {
-		vm_errors.ThrowError(vm_errors.NOTBYTECODE, ip)
+	if vm.readWordX32(0) != 0xFEE1DEAD {
+		vm_errors.ThrowError(vm_errors.NOTBYTECODE, vm.ip)
 	}
 	//find where is import section
-	if ip := findImportSection(); ip == 0 {
+	if ip := vm.findImportSection(); ip == 0 {
 		vm_errors.ThrowError(vm_errors.MODSECFINDFAIL, ip)
 	}
-	for ; ip != len(bytecode); ip++ {
-		fmt.Printf("\n\n INSTRUCTION: 0x%02x\n\n", bytecode[ip])
-		switch bytecode[ip] {
+	for ; vm.ip != len(vm.bytecode); vm.ip++ {
+		fmt.Printf("\n\n INSTRUCTION: 0x%02x\n\n", vm.bytecode[vm.ip])
+		switch vm.bytecode[vm.ip] {
 		//TODO: Implement other opcodes from opcodes.go
 		case opcode.PUSHBYTE:
 			fmt.Println("\nPUSH BYTE command")
-			ip++
-			value := bytecode[ip]
+			vm.ip++
+			value := vm.bytecode[vm.ip]
 			se := stack.StackElement{Valtype: rte.Byte, Value: value}
-			vmstack.Push(se)
+			vm.ip++
+			vm.stack.Push(se)
 
 		case opcode.PUSHINT:
 			fmt.Println("\nPUSH INT command")
-			ip++
-			value := readWordX32(ip)
-			se := stack.StackElement{Valtype: rte.Integer, Value: value}
-			vmstack.Push(se)
+			vm.ip++
+			se := stack.StackElement{Valtype: rte.Integer, Value: vm.readWordX32(vm.ip)}
+			vm.ip++
+			vm.stack.Push(se)
 
 		case opcode.PUSHFLOAT:
 			fmt.Println("\nPUSH FLOAT command")
-			ip++
-			value := readWordX32(ip)
-			se := stack.StackElement{Valtype: rte.Float, Value: value}
-			vmstack.Push(se)
+			vm.ip++
+			se := stack.StackElement{Valtype: rte.Float, Value: vm.readWordX32(vm.ip)}
+			vm.ip++
+			vm.stack.Push(se)
 
 		case opcode.PUSHREF:
 			fmt.Println("\nPUSH REF command")
-			ip++
-			value := readWordX32(ip)
-			se := stack.StackElement{Valtype: rte.Reference, Value: value}
-			vmstack.Push(se)
+			vm.ip++
+			se := stack.StackElement{Valtype: rte.Reference, Value: vm.readWordX32(vm.ip)}
+			vm.ip++
+			vm.stack.Push(se)
 
 		case opcode.POP:
 			fmt.Println("\nPOP command")
-			ip++
+			vm.ip++
 
 		default:
-			vm_errors.ThrowError(vm_errors.UNKNOWNOPCODE, ip)
+			vm_errors.ThrowError(vm_errors.UNKNOWNOPCODE, vm.ip)
 		}
 
 	}
 
 }
 
-func findImportSection() int {
-	for ind, value := range bytecode {
+func (vm *VM) findImportSection() int {
+	for ind, value := range vm.bytecode {
 		if value == opcode.MODSEC {
 			return ind
 		}
@@ -84,20 +87,20 @@ func findImportSection() int {
 	return 0
 }
 
-func readWordX32(start int) int {
+func (vm *VM) readWordX32(start int) int {
 	var word int
 	var offset int = 24
 	for i := 0; i != 4; i++ {
-		ip++
-		word += int(bytecode[start+i]) << offset
+		vm.ip++
+		word += int(vm.bytecode[start+i]) << offset
 		offset -= 8
 	}
 	fmt.Printf("word: 0x%02x\n", word)
 	return word
 }
 
-func PrintStack() {
-	for index, value := range vmstack.Stack {
+func (vm *VM) PrintStack() {
+	for index, value := range vm.stack.Stack {
 		fmt.Printf(": %d :||: %02x :", index, value.Value)
 	}
 }
