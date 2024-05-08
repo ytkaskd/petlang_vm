@@ -1,5 +1,4 @@
-![petlangvm](https://github.com/ytkaskd/petlang_vm/assets/95956785/c5672156-2655-479b-9fda-43f31b5239a1)
-
+![IMG_20240508_143140](https://github.com/ytkaskd/petlang_vm/assets/95956785/4ef96def-dcab-44e7-8333-4fd3be0e7dc1)
 <!-- Name -->
 <h1 align="center">
   Petlang Virtual Machine 🐶📟
@@ -22,6 +21,7 @@
 - [ ] Multi-threading
 - [x] Error service
 - [ ] Heap
+
 - [ ] Constant pool
 
 ## ❓ About
