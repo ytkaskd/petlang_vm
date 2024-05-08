@@ -16,10 +16,13 @@
 - [ ] Documentation
 - [x] Bytecode opcodes
 - [ ] Bytecode compiler
+- [ ] Petlang grammar
 - [x] Base types
 - [x] Stack operations
 - [ ] Multi-threading
 - [x] Error service
+- [ ] Heap
+- [ ] Constant pool
 
 ## ❓ About
 Petlang VM - modular virtual machine with its own bytecode `.pbc` and object files `.pto`

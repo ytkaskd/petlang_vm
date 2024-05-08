@@ -3,6 +3,7 @@ package petlangvm
 import (
 	"fmt"
 	"petlangvm/petlang_vm/stack"
+	constantpool "petlangvm/petlang_vm/stack/constant_pool"
 	rte "petlangvm/petlang_vm/stack/petlangRTE"
 	vm_errors "petlangvm/petlang_vm/vm_error_service"
 	opcode "petlangvm/petlang_vm/vm_opcodes"
@@ -12,6 +13,7 @@ type VM struct {
 	ip       int
 	bytecode []byte
 	stack    *stack.Stack
+	Pool     *constantpool.ConstantPool
 }
 
 func (vm *VM) Preload(bc []byte, stackSize int) {
@@ -21,6 +23,7 @@ func (vm *VM) Preload(bc []byte, stackSize int) {
 	vm.stack.Bp = stackSize - 1
 	vm.stack.Sp = stackSize - 1
 	vm.stack.Stack = make([]stack.StackElement, stackSize)
+	vm.Pool = new(constantpool.ConstantPool)
 }
 
 func (vm *VM) EvalByteCode() {
