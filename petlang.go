@@ -18,8 +18,6 @@ func main() {
 	stackSize := flag.Int("ss", 256, "\033[94mPetlangVM stack size\033[0m")
 	dbgMode := flag.Bool("dbg", false, "\033[94mEnable debug mode\033[0m")
 	flag.Parse()
-	fmt.Printf("Stack size -ss: %d\n", *stackSize)
-	fmt.Printf("dbg mod %v\n", *dbgMode)
 
 	if bc := loadByteCode(os.Args[len(os.Args)-1]); bc != nil {
 		pvm.Preload(bc, *stackSize)
@@ -54,6 +52,6 @@ func loadByteCode(filename string) []byte {
 		fmt.Println(err)
 		return nil
 	}
-	fmt.Println("Openned")
+	//fmt.Println("Openned")
 	return bc
 }

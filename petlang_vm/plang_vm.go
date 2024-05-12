@@ -73,6 +73,13 @@ func (vm *VM) EvalByteCode() {
 			fmt.Println("\nPOP command")
 			vm.ip++
 
+		case opcode.ALIGNVAR:
+			fmt.Println("Allign")
+			vm.ip++
+			name := vm.readName(vm.ip)
+			addr := vm.stack.Sp
+			vm.Pool.Add(name, addr)
+
 		default:
 			vm_errors.ThrowError(vm_errors.UNKNOWNOPCODE, vm.ip)
 		}
@@ -100,6 +107,20 @@ func (vm *VM) readWordX32(start int) int {
 	}
 	fmt.Printf("word: 0x%02x\n", word)
 	return word
+}
+
+func (vm *VM) readName(start int) string {
+	name := ""
+	for i := start; vm.bytecode[i] != '$'; i++ {
+		name += string(vm.bytecode[i])
+		vm.ip++
+		fmt.Printf("String: %s\n", name)
+	}
+	if name != "" {
+		return name
+	}
+	vm_errors.ThrowError(vm_errors.NOTBYTECODE, vm.ip)
+	return name
 }
 
 func (vm *VM) PrintStack() {

@@ -8,6 +8,7 @@ const (
 	PUSHREF   byte = 0xC3
 	IFSTAT    byte = 0xC4
 	ELSE      byte = 0xC5
+	ALIGNVAR  byte = 0xC6
 
 	POP    byte = 0xF1
 	RETURN byte = 0xF2
